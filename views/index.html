@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>博客</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/index.css">
+    <link rel="stylesheet" href="http://at.alicdn.com/t/font_429692_jg7jqzge3qkkpgb9.css">
+    <link rel="stylesheet" href="http://at.alicdn.com/t/font_429692_p0kclkuc16nljtt9.css">
+    <link rel="stylesheet" href="/plugins/editor.md/css/editormd.preview.min.css">
+</head>
+
+<body>
+    <div class="nav">
+        <div class="nav-left">
+            <div class="top">
+                <img src="/assets/images/3.png" alt="">
+                <i class="iconfont icon-liebiao">
+                    
+                </i>
+            </div>
+            <div class="clear"></div>
+            <div class="second">
+                <h1>博客</h1>
+                <h4>人生几何</h4>
+            </div>
+            <i class="iconfont icon-icon"></i>
+        </div>
+        <ul class="type">
+            <% results3.forEach(function(value,key){ %>
+                <li>
+                    <a href="/?tid=<%=value.id%>">
+                        <%=value.username%>
+                    </a>
+                </li>
+                <% }) %>
+        </ul>
+        <%results2.forEach(function(value,key){%>
+            <div class="art">
+                <article>
+                    <header class="art-head">
+                        <h2><a class="h" href="/show/<%=value.id%>"><%=value.articles%></a></h2>
+                    </header>
+                    <section>
+                        <p>
+                            <%=value.contents%>
+                                <a class="more" href="/show/<%=value.id%>">
+                                    <<</a>
+                        </p>
+                    </section>
+                    <footer>
+                        <img src="/assets/images/3.png" alt="">
+                        <a class="author" href="">Author</a>
+                        <time>
+                            <%=moment.unix(value.addtime).format('YYYY-MM-DD HH:mm:ss')%>
+                        </time>
+                    </footer>
+                </article>
+            </div>
+            <%})%>
+                <div class="page">
+                    <!-- <a href="?p=1">首页</a> -->
+                    <a href="?p=<%=page.prev%><%=param%>">Newer Post</a>
+                    <span>Page <%=page.now%> of <%=page.pages%></span>
+                    <!-- <% for (var i = 1; i <= page.pages; i++) { %>
+                            <% if (i >= page.now+2 && i < page.pages) { %>
+                                <% continue; %>
+                            <% } %>
+                            <a href="?p=<%=i%>">第<%=i%>页</a>
+                        <% } %> -->
+                    <a href="?p=<%=page.next%><%=param%>">Older Post</a>
+                    <!-- <a href="?p=<%=page.pages%>">末页</a> -->
+                </div>
+    </div>
+    <div class="nav-cover">
+        <i class="iconfont icon-liebiao"></i>
+        <div class="content">
+            <h3>MENU</h3>
+            <ul>
+                <li>首页</li>
+                <li>归档</li>
+                <li>about</li>
+                <li>links</li>
+                <li>订阅</li>
+            </ul>
+        </div>
+        <div class="search">
+            <input class="select" type="text" value="">
+        </div>
+        <ul class="searchs"></ul>
+        <a href=""></a>
+    </div>
+    <script src="/assets/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/plugins/scrolltopcontrol/scrolltopcontrol.js"></script>
+    <script type="text/javascript">
+    $('.nav-left .top i').click(function() {
+        $('.nav-cover').animate({ right: 0 }, 1000);
+        $('.nav').animate({ left: -117 }, 1000);
+        $(this).hide(1000);
+    })
+    $('.nav-cover i').click(function() {
+        $('.nav-cover').animate({ right: -255 }, 1000);
+        $('.nav').animate({ left: 0 }, 1000);
+        $('.nav-left .top i').show(1000);
+    })
+    </script>
+    <script type="text/javascript">
+    $('.select').blur(function() {
+        var value = $.trim($(this).val());
+        $.post('/aselect', { search: value }, function(data) {
+            if (data.success === 1) {
+                data.results7.forEach(function(value, key) {
+                    var str = "";
+                    str += '<li><a style="color:white" href="/show/' + value.id + '">' + value.articles + '</a></li>';
+                    $('.searchs').append(str);
+                });
+            } else {
+                console.log('失败');
+            }
+        })
+    })
+    </script>
+</body>
+
+</html>
